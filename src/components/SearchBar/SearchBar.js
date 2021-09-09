@@ -1,51 +1,50 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import styles from './SearchBar.module.css';
 
-class SearchBar extends Component {
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+function SearchBar({ onSubmit }) {
+  const initialQuery = '';
+
+  const [query, setQuery] = useState(initialQuery);
+
+  const handelChange = e => {
+    setQuery(e.currentTarget.value.toLowerCase());
   };
 
-  state = {
-    query: '',
-  };
-
-  handelChange = e => {
-    this.setState({ query: e.currentTarget.value.toLowerCase() });
-  };
-
-  handelSubmit = e => {
+  const handelSubmit = e => {
     e.preventDefault();
-    if (this.state.query.trim() === '') {
+    if (query.trim() === '') {
       alert('Enter a query!');
       return;
     }
-    this.props.onSubmit(this.state.query);
-    this.setState({ query: '' });
+    onSubmit(query);
+
+    setQuery(initialQuery);
   };
 
-  render() {
-    const { query } = this.state;
-    return (
-      <header className={styles.header}>
-        <form className={styles.form} onSubmit={this.handelSubmit}>
-          <button type="submit" className={styles.button}>
-            <span className={styles.label}> Search</span>
-          </button>
-          <input
-            className={styles.input}
-            type="text"
-            // autocomplete="off"
-            // autofocus
-            placeholder="Search images and photos"
-            value={query}
-            onChange={this.handelChange}
-          />
-        </form>
-      </header>
-    );
-  }
+  return (
+    <header className={styles.header}>
+      <form className={styles.form} onSubmit={handelSubmit}>
+        <button type="submit" className={styles.button}>
+          <span className={styles.label}> Search</span>
+        </button>
+        <input
+          className={styles.input}
+          type="text"
+          // autocomplete="off"
+          // autofocus
+          placeholder="Search images and photos"
+          value={query}
+          onChange={handelChange}
+        />
+      </form>
+    </header>
+  );
 }
+
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
+
 export default SearchBar;

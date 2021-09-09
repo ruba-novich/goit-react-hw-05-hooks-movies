@@ -1,40 +1,40 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import styles from './Modal.module.css';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 
 const modalRoot = document.querySelector('#modal-root');
 
-class Modal extends Component {
-  static propTypes = {
-    onClick: PropTypes.func.isRequired,
-  };
+function Modal({ onClick, children }) {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('click', handleBackdropClick);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('click', handleBackdropClick);
+    };
+  });
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.hendelKeyDown);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.hendelKeyDown);
-  }
-  hendelKeyDown = e => {
+  const handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onClick();
+      onClick();
     }
   };
-  hendelBecdropClick = e => {
+  const handleBackdropClick = e => {
     if (e.currentTarget === e.target) {
-      this.props.onClick();
+      onClick();
     }
   };
 
-  render() {
-    return createPortal(
-      <div className={styles.Overlay} onClick={this.hendelBecdropClick}>
-        <div className={styles.Modal}>{this.props.children}</div>
-      </div>,
-      modalRoot,
-    );
-  }
+  return createPortal(
+    <div className={styles.Overlay} onClick={handleBackdropClick}>
+      <div className={styles.Modal}>{children}</div>
+    </div>,
+    modalRoot,
+  );
 }
+
+Modal.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 export default Modal;
