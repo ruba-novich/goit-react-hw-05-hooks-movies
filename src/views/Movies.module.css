@@ -1,0 +1,51 @@
+
+
+.MovieDetails {
+  height: auto;
+  min-height: 400px;
+  display: flex;
+  text-align: left;
+  margin: 10px;
+}
+
+.MoviePageBlock {
+  margin-left: 10px;
+  line-height: 2;
+}
+
+.MoviePageImg {
+  height: 400px;
+}
+
+.MoviePageImgBlock {
+  display: block;
+  /* height: 400px; */
+  width: 300px;
+  text-align: center;
+}
+
+.MoviePageNoimg {
+  margin-top: 50%;
+  margin-bottom: 50%;
+  font-size: 20px;
+}
+
+.MoviePageMenu {
+  border-bottom: rgb(91, 88, 87) solid 2px;
+  border-top: rgb(91, 88, 87) solid 2px;
+
+  text-align: left;
+  margin: 20px;
+}
+.MovieTitle {
+  margin: 0;
+}
+.DetailsItem {
+  margin-bottom: 10px;
+}
+.Details {
+  font-size: 24px;
+  color: #446179;
+  margin-bottom: 15px;
+  font-family: "Zen Tokyo Zoo", cursive;
+}

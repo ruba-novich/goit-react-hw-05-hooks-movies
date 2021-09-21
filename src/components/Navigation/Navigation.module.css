@@ -1,4 +1,5 @@
-.header {
+.Navigation {
+  display: flex;
   top: 0;
   left: 0;
   position: sticky;
@@ -11,16 +12,33 @@
   padding-left: 24px;
   padding-top: 12px;
   padding-bottom: 12px;
-  color: #fff;
-  background-color: #3f51b5;
+  color: rgb(240, 56, 56);
+  background-color: #9396aa;
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
-/*
- * Стили компонента SearchForm
- */
-.form {
+.NavigationList {
+  display: inline-block;
+  /* width: 100%; */
+  font: inherit;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.NavigationItem {
+  color: #261e86;
+  margin-right: 100px;
+  border: 1px solid adadca;
+  background-color: #b0a9b7;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 24px;
+  font-family: "Otomanopee One", sans-serif;
+}
+/* .SearchForm {
   display: flex;
   align-items: center;
   width: 100%;
@@ -29,13 +47,12 @@
   border-radius: 3px;
   overflow: hidden;
 }
-
-.button {
+.SearchForm-button {
   display: inline-block;
   width: 48px;
   height: 48px;
   border: 0;
-  background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg');
+  background-image: url("https://image.flaticon.com/icons/svg/149/149852.svg");
   background-size: 40%;
   background-repeat: no-repeat;
   background-position: center;
@@ -44,12 +61,10 @@
   cursor: pointer;
   outline: none;
 }
-
-.button:hover {
+.SearchForm-button:hover {
   opacity: 1;
 }
-
-.label {
+.SearchForm-button-label {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -60,19 +75,9 @@
   clip-path: inset(50%);
   border: 0;
 }
+*/
 
-.input {
-  display: inline-block;
-  width: 100%;
-  font: inherit;
-  font-size: 20px;
-  border: none;
-  outline: none;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.input::placeholder {
+.NavigationList::placeholder {
   font: inherit;
   font-size: 18px;
 }

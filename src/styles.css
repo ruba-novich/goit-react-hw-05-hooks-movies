@@ -1,9 +1,7 @@
 html {
   box-sizing: border-box;
-  width: 100vw;
-  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
-
 *,
 *::before,
 *::after {
@@ -11,28 +9,32 @@ html {
 }
 
 body {
+  overflow-x: hidden;
+  letter-spacing: 0.03em;
+}
+
+ul {
+  list-style: none;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-  color: #212121;
-  background-color: #fff;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
-
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+p {
+  margin: 0;
+  padding: 0;
 }
-
-.app {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 16px;
-  padding-bottom: 24px;
-}
-
+/* h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+  padding: 0;
+  margin: 0 0 20px 0; */
+/* } */
 .title {
-  margin: 40px auto ;
+  font-size: 36px;
+}
+a {
+  text-decoration: none;
 }
