@@ -1,30 +1,16 @@
-import Axios from 'axios';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
+import * as movieApi from '../service/movie-api';
 import MoviesList from '../components/MoviesList';
-import styles from './Movies.module.css';
 
-class HomePage extends Component {
-  state = {
-    movies: [],
-  };
+export default function HomePage() {
+  const [movies, setMovies] = useState([]);
 
-  async componentDidMount() {
-    const API_KEY = '4f82ed1427d5ffdf5673256bc4f7ef74';
-    const response = await Axios.get(
-      `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`,
-    );
+  useEffect(() => {
+    movieApi.fetchTrending().then(movies => {
+      setMovies(movies.results);
+      // console.log(movies);
+    });
+  }, []);
 
-    this.setState({ movies: response.data.results });
-  }
-
-  render() {
-    const { movies } = this.state;
-    return (
-      <ul className={styles.MovieList}>
-        <MoviesList movies={movies} />
-      </ul>
-    );
-  }
+  return <>{movies && <MoviesList movies={movies} />}</>;
 }
-
-export default HomePage;

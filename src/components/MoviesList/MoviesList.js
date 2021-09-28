@@ -1,35 +1,51 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MoviePreview from '../MoviePreview';
 import styles from './MoviesList.module.css';
 
-const MoviesList = ({ movies, match, location }) => {
-  let movieUrl = match.url.includes('movies') ? '' : 'movies';
+const MoviesList = ({ movies }) => {
+  const location = useLocation();
+
+  // const history = useHistory();
+  const match = useRouteMatch();
+  let movieUrl = match.url.includes('movies')
+    ? match.url
+    : `${match.url}movies`;
+  // console.log('locationMoviesList', location);
+  // console.log('history', history);
+  // console.log('movies', movies);
+  // console.log('match', match);
+
+  // console.log('movieUrl', movieUrl);
 
   return (
-    <ul className={styles.MovieList}>
-      {movies.map(movie => (
-        <li key={movie.id} className={styles.MovieItem}>
-          <NavLink
-            className={styles.MovieListItem}
-            to={{
-              pathname: `${match.url}${movieUrl}/${movie.id}`,
-              state: { from: location },
-            }}
-          >
-            <MoviePreview movie={movie} />
-          </NavLink>
-        </li>
-      ))}
-    </ul>
+    <>
+      {movies && (
+        <ul className={styles.MovieList}>
+          {movies.map(movie => (
+            <li key={movie.id} className={styles.MovieItem}>
+              <Link
+                className={styles.MovieListItem}
+                to={{
+                  pathname: `${movieUrl}/${movie.id}`,
+                  state: {
+                    from: location,
+                  },
+                }}
+              >
+                {movie && <MoviePreview movie={movie} />}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 };
 
-export default withRouter(MoviesList);
+export default MoviesList;
 
 MoviesList.propTypes = {
   movies: PropTypes.array.isRequired,
-  match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
 };

@@ -1,44 +1,57 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import SearchMovie from '../components/SearchMovie';
 import MoviesList from '../components/MoviesList';
-import Axios from 'axios';
+import * as movieApi from '../service/movie-api';
 
-class MoviesPage extends Component {
-  state = {
-    movies: [],
-    query: '',
-    imgPage: 1,
-  };
+const MoviesPage = () => {
+  const [movies, setMovies] = useState(null);
+  const [query, setQuery] = useState('');
+  const history = useHistory();
+  const location = useLocation();
+  const searchUrl = new URLSearchParams(location.search).get('query') ?? '';
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.query !== this.state.query) {
-      this.fetchMovies();
+  // console.log('movies', movies);
+
+  useEffect(() => {
+    if (!query) {
+      return;
     }
-  }
 
-  onChangeQuery = query => {
-    this.setState({ query: query });
+    movieApi
+      .fetchSearchMovies(query)
+      .then(response => {
+        setMovies(response.results);
+        // console.log('response.results', response.results);
+      })
+      .catch(error => alert('ERROR FETCH'));
+  }, [query]);
+
+  useEffect(() => {
+    if (searchUrl === '') {
+      return;
+    }
+    setQuery(searchUrl);
+  }, [searchUrl]);
+
+  const onChangeQuery = query => {
+    setQuery(query);
+    setHistory(query);
   };
 
-  async fetchMovies() {
-    const API_KEY = '4f82ed1427d5ffdf5673256bc4f7ef74';
-    const { query, imgPage } = this.state;
+  const setHistory = query => {
+    history.push({
+      ...location,
+      search: `query=${query}`,
+    });
+  };
 
-    const response = await Axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&page=${imgPage}&include_adult=false&query=${query}`,
-    );
-
-    this.setState({ movies: response.data.results });
-  }
-
-  render() {
-    return (
-      <>
-        <SearchMovie onSubmit={this.onChangeQuery} />
-        <MoviesList movies={this.state.movies} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <SearchMovie onSubmit={onChangeQuery} />
+      {movies && <MoviesList movies={movies} />}
+    </>
+  );
+};
 
 export default MoviesPage;

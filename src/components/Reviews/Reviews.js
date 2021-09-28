@@ -1,39 +1,40 @@
-import { Component } from 'react';
-import MovieApi from '../../service/movie-api';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import * as movieApi from '../../service/movie-api';
 
 import styles from './Reviews.module.css';
 
-class Reviews extends Component {
-  state = {
-    authors: [],
-  };
-  async componentDidMount() {
-    const { movieId } = this.props.match.params;
+const Reviews = () => {
+  const [authors, setAuthors] = useState(null);
+  // console.log('authors', authors);
+  const { movieId } = useParams();
+  useEffect(() => {
+    movieApi.fetchMovieReviews(movieId).then(movie => {
+      setAuthors(movie.results);
+      // console.log(movie);
+    });
+  }, [movieId]);
 
-    const urlQuery = `${movieId}/reviews`;
-
-    const response = await MovieApi(urlQuery);
-
-    this.setState({ authors: response.data.results });
-  }
-  render() {
-    const { authors } = this.state;
-
-    return (
-      <ul className={styles.ReviewsList}>
-        {!authors.length ? (
-          <h2 lassName={styles.Title}>We don't any reviews for this movie</h2>
-        ) : (
-          authors.map(({ id, author, content }) => (
-            <li key={id}>
-              <h2>Author: {author}</h2>
-              <p>{content}</p>
-            </li>
-          ))
-        )}
-      </ul>
-    );
-  }
-}
+  return (
+    <>
+      {authors && (
+        <ul className={styles.ReviewsList}>
+          {!authors.length ? (
+            <h3 className={styles.Title}>
+              We don't any reviews for this movie
+            </h3>
+          ) : (
+            authors.map(({ id, author, content }) => (
+              <li key={id}>
+                <h3>Author: {author}</h3>
+                <p>{content}</p>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
+    </>
+  );
+};
 
 export default Reviews;

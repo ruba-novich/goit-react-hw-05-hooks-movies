@@ -1,33 +1,24 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
+
 import PropTypes from 'prop-types';
-import { routes } from '../../routes';
 
 import styles from './Button.module.css';
 
-class Button extends Component {
-  static propTypes = {
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-  };
+const Button = ({ onClick }) => {
+  return (
+    <button
+      className={styles.Button}
+      tupe="button"
+      onClick={() => {
+        onClick();
+      }}
+    >
+      Back
+    </button>
+  );
+};
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
-  renderBackUrl = () => {
-    const { location, history } = this.props;
-
-    history.push(location?.state?.from || routes.home);
-  };
-
-  render() {
-    return (
-      <button
-        className={styles.Button}
-        variant="contained"
-        onClick={this.renderBackUrl}
-      >
-        Back
-      </button>
-    );
-  }
-}
-
-export default withRouter(Button);
+export default Button;

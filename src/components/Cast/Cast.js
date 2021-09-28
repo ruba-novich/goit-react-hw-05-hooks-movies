@@ -1,45 +1,46 @@
-import { Component } from 'react';
-import MovieApi from '../../service/movie-api';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import * as movieApi from '../../service/movie-api';
 
 import styles from './Cast.module.css';
 
-class Cast extends Component {
-  state = {
-    cast: [],
-  };
+const Cast = () => {
+  const [cast, setCast] = useState(null);
+  // console.log('cast', cast);
+  const { movieId } = useParams();
+  // console.log('id', movieId);
 
-  async componentDidMount() {
-    const { movieId } = this.props.match.params;
-    const urlQuery = `${movieId}/credits`;
-    const response = await MovieApi(urlQuery);
-    this.setState({ cast: response.data.cast });
-  }
+  useEffect(() => {
+    movieApi.fetchMovieCredits(movieId).then(movie => {
+      setCast(movie.cast);
+    });
+  }, [movieId]);
 
-  render() {
-    const { cast } = this.state;
-
-    return (
-      <ul className={styles.ActorList}>
-        {cast.map(({ id, profile_path, name, character }) => (
-          <li key={id} className={styles.ActorItem}>
-            <div>
-              {profile_path ? (
-                <img
-                  className={styles.ActorImg}
-                  src={`https://image.tmdb.org/t/p/w200${profile_path}`}
-                  alt={name}
-                />
-              ) : (
-                <p>No img</p>
-              )}
-            </div>
-            <h2>{name}</h2>
-            <p>Character: {character}</p>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-}
+  return (
+    <>
+      {cast && (
+        <ul className={styles.ActorList}>
+          {cast.map(({ id, profile_path, name, character }) => (
+            <li key={id} className={styles.ActorItem}>
+              <div>
+                {!profile_path ? (
+                  <p>No img</p>
+                ) : (
+                  <img
+                    className={styles.ActorImg}
+                    src={`https://image.tmdb.org/t/p/w200${profile_path}`}
+                    alt={name}
+                  />
+                )}
+              </div>
+              <h2>{name}</h2>
+              <p>Character: {character}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+};
 
 export default Cast;
